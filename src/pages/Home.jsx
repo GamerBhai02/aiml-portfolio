@@ -7,12 +7,22 @@ import Reveal from '../components/Reveal';
 import SocialIcons from '../components/SocialIcons';
 import { getProfile, getItems, COLLECTIONS } from '../services/firestoreService';
 import { formatDate, sortByOrder } from '../utils/format';
+import usePageMeta from '../hooks/usePageMeta';
 
 export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [resumeOpen, setResumeOpen] = useState(false);
   const location = useLocation();
+
+  usePageMeta({
+    title: data?.profile?.name
+      ? `${data.profile.name} — AI/ML Engineer Portfolio`
+      : 'Abu Talha Ansari — AI/ML Engineer Portfolio',
+    description:
+      data?.profile?.tagline ||
+      'Portfolio of an AI/ML engineer — projects, research papers, patents, certifications and blog.',
+  });
 
   useEffect(() => {
     let active = true;

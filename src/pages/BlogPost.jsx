@@ -4,12 +4,23 @@ import { getItem, COLLECTIONS } from '../services/firestoreService';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import { formatDate } from '../utils/format';
+import usePageMeta from '../hooks/usePageMeta';
 
 export default function BlogPost() {
   const { id } = useParams();
   const { user, loading: authLoading } = useAuth();
   const [post, setPost] = useState(undefined);
   const [error, setError] = useState(null);
+
+  usePageMeta({
+    title: post?.title ? `${post.title} — Abu Talha Ansari` : 'Blog — Abu Talha Ansari',
+    description: post?.content
+      ? post.content.split(/\n{2,}/)[0].slice(0, 160)
+      : 'Blog post by Abu Talha Ansari.',
+    path: `/blog/${id}`,
+    image: post?.coverImage || undefined,
+    noindex: Boolean(post && !post.published),
+  });
 
   useEffect(() => {
     let active = true;

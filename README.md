@@ -181,9 +181,10 @@ trigger a new deploy.
 
 ## Make It Yours
 
-1. **Your name** — it is hard-coded in three places for SEO and branding:
+1. **Your name** — it is hard-coded in a few places for SEO and branding:
+   - `src/siteConfig.js` — `SITE_URL` (replace with your real domain), `SITE_NAME`.
    - `index.html` — `<title>`, meta description, Open Graph tags and JSON-LD
-     `Person` schema (also update `og:url` to your real domain).
+     `Person` + `WebSite` schema.
    - `src/components/Footer.jsx` — the copyright line
      `© {year} Abu Talha Ansari. All rights reserved.`
    - The **navbar brand**, **hero name** and **About section** pull your name
@@ -208,11 +209,19 @@ Never commit a real `.env` — it is already git-ignored.
 
 ## SEO Tips
 
-- Set the real `og:url` and domain in `index.html` once deployed.
+- **Per-page meta is automatic** — `src/hooks/usePageMeta.js` sets the
+  `document.title`, meta description, canonical URL, Open Graph tags and robots
+  directive on every route. Blog posts get their own title/description/OG image
+  from the post content; the admin panel is `noindex`.
+- **Set your real domain** in `src/siteConfig.js` (`SITE_URL`), then update the
+  same URL in `public/robots.txt` and `public/sitemap.xml`. Submit the sitemap
+  in Google Search Console.
 - Blog posts and project titles become the page's most crawlable text — use
   descriptive titles and write 2+ sentences of description.
-- Add a `public/robots.txt` and `public/sitemap.xml` for better indexing.
-- Submit your Netlify URL to Google Search Console.
+- **Crawler caveat:** this is a client-rendered SPA, so the HTML shell is
+  static. Googlebot runs JavaScript and will see the rendered content, but if
+  you want pre-rendered HTML for all crawlers, add an SSR/prerender layer
+  (e.g. Vite SSR or a prerender service) on top.
 
 ## Troubleshooting
 

@@ -5,10 +5,17 @@ import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
 import Reveal from '../components/Reveal';
 import { formatDate, firstParagraph, sortByOrder } from '../utils/format';
+import usePageMeta from '../hooks/usePageMeta';
 
 export default function BlogList() {
   const [posts, setPosts] = useState(null);
   const [error, setError] = useState(null);
+
+  usePageMeta({
+    title: 'Blog — Abu Talha Ansari',
+    description: 'Blog posts, notes and write-ups by Abu Talha Ansari on AI, ML and data science.',
+    path: '/blog',
+  });
 
   useEffect(() => {
     let active = true;

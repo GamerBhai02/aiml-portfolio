@@ -10,9 +10,11 @@ import BlogList from './pages/BlogList';
 import BlogPost from './pages/BlogPost';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import usePageMeta from './hooks/usePageMeta';
 
 function AdminGate() {
   const { user, loading } = useAuth();
+  usePageMeta({ title: 'Admin — Portfolio', noindex: true });
   if (loading) return <Loading full />;
   return user ? <AdminDashboard /> : <AdminLogin />;
 }
