@@ -307,6 +307,7 @@ input, textarea {
   border: 1px solid var(--border);
   font-size: 0.95rem;
   font-weight: 500;
+  cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   background: var(--card);
   color: var(--text);
@@ -1275,3 +1276,93 @@ input, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============ Resume preview modal ============ */
+
+.resume-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4, 5, 12, 0.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.resume-modal {
+  width: min(900px, 100%);
+  height: 88vh;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.resume-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.resume-title {
+  font-family: var(--font-head);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.resume-close {
+  background: var(--card-strong);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resume-close:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.resume-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+.resume-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+  .resume-overlay {
+    padding: 0;
+  }
+
+  .resume-modal {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+}
+

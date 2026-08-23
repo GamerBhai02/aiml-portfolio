@@ -11,6 +11,7 @@ import { formatDate, sortByOrder } from '../utils/format';
 export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -69,6 +70,20 @@ export default function Home() {
     }
   }, [location, data]);
 
+  // Close the resume preview with Escape and lock page scroll while open.
+  useEffect(() => {
+    if (!resumeOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setResumeOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [resumeOpen]);
+
   if (error) {
     return (
       <div className="page-error">
@@ -116,14 +131,9 @@ export default function Home() {
           {profile?.tagline && <p className="hero-tagline">{profile.tagline}</p>}
           <div className="hero-actions">
             {profile?.resumeUrl && (
-              <a
-                className="btn btn-primary"
-                href={profile.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <button className="btn btn-primary" onClick={() => setResumeOpen(true)}>
                 View Resume
-              </a>
+              </button>
             )}
             <a className="btn btn-ghost" href="#projects">
               View Projects
@@ -425,6 +435,39 @@ export default function Home() {
           </div>
         </Reveal>
       </Section>
+      )}
+
+      {/* ===== Resume preview modal ===== */}
+      {resumeOpen && profile?.resumeUrl && (
+        <div className="resume-overlay" onClick={() => setResumeOpen(false)}>
+          <div className="resume-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="resume-modal-head">
+              <span className="resume-title">Resume — {profile?.name || 'Portfolio'}</span>
+              <button
+                className="resume-close"
+                onClick={() => setResumeOpen(false)}
+                aria-label="Close resume"
+              >
+                ×
+              </button>
+            </div>
+            <iframe
+              className="resume-frame"
+              src={profile.resumeUrl}
+              title="Resume preview"
+            />
+            <div className="resume-modal-foot">
+              <a
+                className="btn btn-ghost btn-small"
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open in new tab
+              </a>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
